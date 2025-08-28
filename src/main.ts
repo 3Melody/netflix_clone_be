@@ -7,13 +7,23 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT') || 4000;
 
-    app.enableCors({
-    origin: ['http://localhost:3000', 'https://nextflix-clone-fe.vercel.app/'],
+  const allowedOrigins = [
+    'http://localhost:3000', // สำหรับ dev
+    'https://nextflix-clone-fe.vercel.app', // สำหรับ production
+  ];
+
+  app.enableCors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
 
   await app.listen(port);
-
 }
 bootstrap();
