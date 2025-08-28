@@ -15,7 +15,7 @@ export class MoviesController {
     return this.movies.nowPlaying(); 
   }
 
-  @Get(':id')
+  @Get('details/:id')
   async details(@Param('id') id: number) {
     return this.movies.details(id);
   }

@@ -2,13 +2,19 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class TmdbService {
-  constructor(private readonly http: HttpService) {}
 
-  private key = process.env.TMDB_API_KEY;
-  private baseUrlMVDB = process.env.TMDB_BASE_URL;
+  private readonly key : any;
+  private readonly baseUrlMVDB : any;
+
+  constructor(private readonly http: HttpService, private readonly configService: ConfigService) {
+    this.key = this.configService.get<string>('TMDB_API_KEY');
+    this.baseUrlMVDB = this.configService.get<string>('TMDB_BASE_URL');
+  }
+
 
   private async tmdbGetParams(path: string) {
     const res = await firstValueFrom(

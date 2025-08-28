@@ -31,6 +31,19 @@ export class MoviesService {
   }
 
     async details(id: number) {
-        return this.tmdb.getDetails(id);
+      const data = await this.tmdb.getDetails(id);
+      
+      return {
+        id: data.id,
+        title: data.title,
+        posterUrl: data.poster_path
+          ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+          : null,
+        overview: data.overview,
+        releaseDate: data.release_date,
+        rating: data.vote_average,
+        production_companies: data.production_companies,
+        original_language: data.original_language,
+      };
     }
 }
