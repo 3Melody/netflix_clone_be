@@ -46,4 +46,15 @@ export class MoviesService {
         original_language: data.original_language,
       };
     }
+
+    async getSearchMovie(query: string) {
+      const data = await this.tmdb.getSearchMovie(query);
+      return data.results.map(movie => ({
+        id: movie.id,
+        title: movie.title,
+        posterUrl: movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          : null,
+      }));
+    }
 }

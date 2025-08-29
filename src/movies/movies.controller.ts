@@ -10,7 +10,7 @@ export class MoviesController {
     try {
       return this.movies.popular();
     } catch (error) {
-       throw new HttpException("Failed to fetch movies", HttpStatus.BAD_GATEWAY);
+       throw new HttpException("Failed to fetch movies", error.message);
     }
   }
 
@@ -19,7 +19,7 @@ export class MoviesController {
     try {
     return this.movies.nowPlaying(); 
     } catch (error) {
-      throw new HttpException("Failed to fetch movies", HttpStatus.BAD_GATEWAY);
+      throw new HttpException("Failed to fetch movies", error.message);
     }
   }
 
@@ -28,7 +28,16 @@ export class MoviesController {
     try {
     return this.movies.details(id);
     } catch (error) {
-      throw new HttpException("Failed to fetch movie details", HttpStatus.BAD_GATEWAY);
+      throw new HttpException("Failed to fetch movie details", error.message);
+    }
+  }
+
+  @Get('search/:query')
+  async getSearchMovie(@Param('query') query: string) {
+    try {
+      return this.movies.getSearchMovie(query);
+    } catch (error) {
+      throw new HttpException("Failed to search movies", error.message);
     }
   }
 }
