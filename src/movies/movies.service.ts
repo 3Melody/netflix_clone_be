@@ -6,12 +6,18 @@ import { TmdbService } from '../data/tmdb.service';
 export class MoviesService {
   constructor(private readonly tmdb: TmdbService) {}
 
+  ChangeLanguage(language: string) {
+    this.tmdb.changeLanguage(language);
+    return { message: `Language changed to ${language}` };
+  }
+
   async popular() {
     const data = await this.tmdb.getPopular();
     // แปลง TMDb raw response → card format
     return data.results.map(movie => ({
       id: movie.id,
       title: movie.title,
+      overview: movie.overview,
       posterUrl: movie.poster_path
         ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
         : null,

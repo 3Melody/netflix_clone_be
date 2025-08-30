@@ -18,11 +18,14 @@ export class TmdbService {
   }
 
   private keyword: string;
+  private langeuage: string;
+
+  
   param() {
     if (this.keyword) {
-      return { api_key: this.key, query: this.keyword };
+      return { api_key: this.key, query: this.keyword , language: this.langeuage || 'en-US' };
     } else {
-      return { api_key: this.key };
+      return { api_key: this.key , language: this.langeuage || 'en-US'};
     }
   }
 
@@ -35,7 +38,11 @@ export class TmdbService {
     return res.data;
   }
 
-  async getPopular() {
+  async changeLanguage(language: string) {
+    this.langeuage = language;
+  }
+
+  async getPopular( ) {
     return this.tmdbGetParams('/movie/popular');
   }
 

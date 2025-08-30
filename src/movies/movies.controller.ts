@@ -1,9 +1,19 @@
 // movies/movies.controller.ts
-import { Controller, Get,HttpException,HttpStatus,Param } from '@nestjs/common';
+import { Controller, Get,HttpException,HttpStatus,Param, Query } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 @Controller('movies')
 export class MoviesController {
   constructor(private readonly movies : MoviesService) {}
+
+  @Get('ChangeLanguage')
+  async ChangeLanguage(@Query('language') language: string) {
+    try {
+      return this.movies.ChangeLanguage(language);
+    } catch (error) {
+      throw new HttpException("Failed to change language", error.message);
+    }
+  }
+  
   
   @Get('popular')
   async popular() {
