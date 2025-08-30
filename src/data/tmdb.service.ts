@@ -4,6 +4,7 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 
+
 @Injectable()
 export class TmdbService {
   private readonly key: any;
@@ -19,13 +20,16 @@ export class TmdbService {
 
   private keyword: string;
   private langeuage: string;
+  private genreId: number;
 
   
   param() {
     if (this.keyword) {
-      return { api_key: this.key, query: this.keyword , language: this.langeuage || 'en-US' };
+      return { api_key: this.key, query: this.keyword , language: this.langeuage || 'en-US'};
+    } else if (this.genreId) {
+      return { api_key: this.key , language: this.langeuage || 'en-US' , with_genres: this.genreId };
     } else {
-      return { api_key: this.key , language: this.langeuage || 'en-US'};
+      return { api_key: this.key , language: this.langeuage || 'en-US' };
     }
   }
 
@@ -57,5 +61,23 @@ export class TmdbService {
   async getSearchMovie(query: string) {
     this.keyword = query;
     return this.tmdbGetParams('/search/movie');
+  }
+
+  async getTopRated() {
+    return this.tmdbGetParams('/movie/top_rated');
+  }
+
+  async getGenres() {
+    return this.tmdbGetParams('/genre/movie/list');
+  }
+
+  async getMovieByGenre(genreId: number) {
+    this.genreId = genreId;
+    this.keyword = '';
+    return this.tmdbGetParams('/discover/movie');
+  }
+
+  async getMovieVideos(id: number) {
+    return this.tmdbGetParams(`/movie/${id}/videos`);
   }
 }

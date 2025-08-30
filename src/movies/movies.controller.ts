@@ -8,7 +8,7 @@ export class MoviesController {
   @Get('ChangeLanguage')
   async ChangeLanguage(@Query('language') language: string) {
     try {
-      return this.movies.ChangeLanguage(language);
+      return  this.movies.ChangeLanguage(language);
     } catch (error) {
       throw new HttpException("Failed to change language", error.message);
     }
@@ -18,7 +18,7 @@ export class MoviesController {
   @Get('popular')
   async popular() {
     try {
-      return this.movies.popular();
+      return await this.movies.popular();
     } catch (error) {
        throw new HttpException("Failed to fetch movies", error.message);
     }
@@ -27,7 +27,7 @@ export class MoviesController {
   @Get('now-playing')
   async nowPlaying() {
     try {
-    return this.movies.nowPlaying(); 
+    return await this.movies.nowPlaying(); 
     } catch (error) {
       throw new HttpException("Failed to fetch movies", error.message);
     }
@@ -36,7 +36,7 @@ export class MoviesController {
   @Get('details/:id')
   async details(@Param('id') id: number) {
     try {
-    return this.movies.details(id);
+    return await this.movies.details(id);
     } catch (error) {
       throw new HttpException("Failed to fetch movie details", error.message);
     }
@@ -44,10 +44,47 @@ export class MoviesController {
 
   @Get('search/:query')
   async getSearchMovie(@Param('query') query: string) {
-    try {
-      return this.movies.getSearchMovie(query);
+     try {
+      return await this.movies.getSearchMovie(query);
     } catch (error) {
       throw new HttpException("Failed to search movies", error.message);
+    }
+  }
+
+  @Get('top-rated')
+  async topRated() {
+    try {
+      return await this.movies.topRated();
+    } catch (error) {
+      throw new HttpException("Failed to fetch top rated movies", error.message);
+    }
+  }
+
+  @Get('genres')
+  async genres() {
+    try {
+      return await this.movies.genres();
+    } catch (error) {
+      throw new HttpException("Failed to fetch genres", error.message);
+    }
+  }
+
+  @Get('genres/:id')
+
+  async moviesByGenre(@Param('id') id: number) {
+    try {
+      return await this.movies.getMovieByGenre(id);
+    } catch (error) {
+      throw new HttpException("Failed to fetch movies by genre", error.message);
+    }
+  }
+
+  @Get('videos/:id')
+  async movieVideos(@Param('id') id: number) {
+    try {
+      return await this.movies.getMovieVideos(id);
+    } catch (error) {
+      throw new HttpException("Failed to fetch movie videos", error.message);
     }
   }
 }

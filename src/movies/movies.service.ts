@@ -63,4 +63,44 @@ export class MoviesService {
           : null,
       }));
     }
+
+    async topRated() {
+      const data = await this.tmdb.getTopRated();
+      return data.results.map(movie => ({
+        id: movie.id,
+        title: movie.title,
+        posterUrl: movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          : null,
+      }));
+    }
+
+    async genres() {
+      const data = await this.tmdb.getGenres();
+      return data.genres; 
+    }
+
+    async getMovieVideos(id: number) {
+      const data = await this.tmdb.getMovieVideos(id);
+      return data.results.map(video => ({
+        id: video.id,
+        key: video.key,
+        name: video.name,
+        site: video.site,
+        type: video.type,
+      }));
+    }
+
+    async getMovieByGenre(genreId: number) {
+      const data = await this.tmdb.getMovieByGenre(genreId);
+      return data.results.map(movie => ({
+        id: movie.id,
+        title: movie.title,
+        posterUrl: movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          : null,
+      }));
+    }
+
+    
 }
